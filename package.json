@@ -1,0 +1,23 @@
+{
+  "name": "cse341-project-1-2",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vasuquo/cse341-project-1-2#readme",
+  "bugs": {
+    "url": "https://github.com/vasuquo/cse341-project-1-2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasuquo/cse341-project-1-2.git"
+  },
+  "license": "ISC",
+  "author": "Victor Asuquo",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
