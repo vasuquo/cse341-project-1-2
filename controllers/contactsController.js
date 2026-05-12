@@ -71,7 +71,7 @@ const newContact = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Client created successfully',
-      clientId: result.insertedId
+      contactId: result.insertedId
     });
 
   } catch (e) {
