@@ -1,20 +1,10 @@
-const { MongoClient, ObjectId } = require('mongodb');
-require('dotenv').config();
-const uri = process.env.MONGODB_URL;
-const dbName = process.env.DB_NAME;
-const collectionName = process.env.COLLECTION_NAME;
-const client = new MongoClient(uri);
-
+const contactModels = require('../models/contacts');
 const getAll = async (req, res) => {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
-    const database = client.db(dbName);
-    const collection = database.collection(collectionName);
-    const query = {};
-    const result = await collection.find(query).toArray();
+    
+    const result = await contactModels.getAllContacts();
 
-    if (result) {
+    if (result.length > 0) {
       res.status(200).json(result);
     } else {
       res
@@ -27,20 +17,14 @@ const getAll = async (req, res) => {
     res
     .status(500)
     .send({ message: 'Error retrieving contact record' });
-  } finally {
-    await client.close();
-  }
+  } 
 };
 
 const getSingle = async (req, res) => {
-  const contactId = new ObjectId(req.params.id);
+
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
-    const database = client.db(dbName);
-    const collection = database.collection(collectionName);
-    const query = { _id: contactId };
-    const result = await collection.find(query).toArray();
+    
+    const result = await contactModels.getOneContact(req.params.id);
 
     if (result.length > 0) {
       res.status(200).json(result[0]);
@@ -56,9 +40,7 @@ const getSingle = async (req, res) => {
             err.message || 'Error occurred while retrieving contacts.',
         });
     console.error(err);
-  } finally {
-    await client.close();
-  }
+  } 
 };
 
 const newContact = async (req, res) => {
@@ -74,10 +56,6 @@ const newContact = async (req, res) => {
 */
 
   try {
-        // Connect to the MongoDB cluster
-    await client.connect();
-    const database = client.db(dbName);
-    const collection = database.collection(collectionName);
 
     const newClient = {
       firstName: req.body.firstName,
@@ -88,7 +66,7 @@ const newContact = async (req, res) => {
     };
 
     // Insert into MongoDB
-    const result = await collection.insertOne(newClient);
+    const result = await contactModels.createContact(newClient);
 
     res.status(201).json({
       success: true,
@@ -102,32 +80,19 @@ const newContact = async (req, res) => {
       success: false,
       message: 'Server error'
     });
-  } finally {
-    await client.close();
-  }
+  } 
 
 }
 
 const updateContact = async (req, res) => {
 
   try {
-    await client.connect();
-    const database = client.db(dbName);
-    const collection = database.collection(collectionName);
-
+    
     const { id } = req.params;
+    const contactData = {favoriteColor: req.body.favoriteColor};
 
-    // Update contact
-    const result = await collection.updateOne(
-      { _id: new ObjectId(id) },
-      {
-        $set: {
-          favoriteColor: req.body.favoriteColor
-        }
-      }
-    );
+    const result = contactModels.updateContact(id, contactData);
 
-    // Check if contact exists
     if (result.matchedCount === 0) {
       return res.status(404).json({
         success: false,
@@ -154,17 +119,12 @@ const updateContact = async (req, res) => {
 
 const deleteContact = async (req, res) => {
   try {
-    await client.connect();
-    const database = client.db(dbName);
-    const collection = database.collection(collectionName);
 
     const { id } = req.params;
 
 
     // Delete a contact
-    const result = await collection.deleteOne({
-      _id: new ObjectId(id)
-    });
+    const result = contactModels.deleteContact(id)
 
     // Check if contact exists
     if (result.deletedCount === 0) {
