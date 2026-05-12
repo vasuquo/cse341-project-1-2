@@ -5,10 +5,10 @@
     "description": "Auto-generated API documentation",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "cse341-project-1-2.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
