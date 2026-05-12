@@ -42,7 +42,7 @@ const getSingle = async (req, res) => {
     const query = { _id: contactId };
     const result = await collection.find(query).toArray();
 
-    if (result.matchedCount === 1) {
+    if (result.length > 0) {
       res.status(200).json(result[0]);
     } else {
       res.status(404).send({
