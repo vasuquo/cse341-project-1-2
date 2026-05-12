@@ -55,7 +55,7 @@ const getSingle = async (req, res) => {
           message:
             err.message || 'Error occurred while retrieving contacts.',
         });
-    console.error(e);
+    console.error(err);
   } finally {
     await client.close();
   }
