@@ -70,7 +70,7 @@ const newContact = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Client created successfully',
+      message: 'Contact created successfully',
       contactId: result.insertedId
     });
 
